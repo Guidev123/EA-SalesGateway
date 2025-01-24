@@ -20,4 +20,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedLib\src\SharedLib.Tokens\SharedLib.Tokens.csproj" />
+  </ItemGroup>
+
 </Project>

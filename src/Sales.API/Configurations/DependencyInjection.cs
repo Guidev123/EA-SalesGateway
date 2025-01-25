@@ -1,5 +1,58 @@
-﻿namespace Sales.API.Configurations;
+﻿using Microsoft.Extensions.Options;
+using Sales.API.Extensions;
+using Sales.API.Services;
+using Sales.API.Services.Cart;
+using Sales.API.Services.Catalog;
+using Sales.API.Services.Order;
+using Sales.API.Services.Payment;
+using Sales.API.Services.User;
+
+namespace Sales.API.Configurations;
 
 public static class DependencyInjection
 {
+    public static void RegisterAllDependencies(this WebApplicationBuilder builder)
+    {
+        builder.AddHttpClientServices();
+        builder.RegisterModelsSettings();
+    }
+
+    public static void AddHttpClientServices(this WebApplicationBuilder builder)
+    {
+        builder.AddHttpClientService<ICartRestService, CartRestService>(options => options.CartUrl);
+        builder.AddHttpClientService<ICatalogRestService, CatalogRestService>(options => options.CatalogUrl);
+        builder.AddHttpClientService<IPaymentRestService, PaymentRestService>(options => options.PaymentUrl);
+        builder.AddHttpClientService<IOrderRestService, OrderRestService>(options => options.OrderUrl);
+    }
+
+    private static void AddHttpClientService<TInterface, TImplementation>(
+        this WebApplicationBuilder builder,
+        Func<AppServicesSettings, string> getServiceUrl)
+        where TInterface : class
+        where TImplementation : Service, TInterface
+    {
+        builder.Services.AddHttpClient<TInterface, TImplementation>((serviceProvider, httpClient) =>
+        {
+            var appServices = serviceProvider.GetRequiredService<IOptions<AppServicesSettings>>().Value;
+            var token = serviceProvider.GetRequiredService<IUserService>();
+
+            var serviceUrl = getServiceUrl(appServices);
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token.GetToken());
+            httpClient.BaseAddress = new Uri(serviceUrl);
+        })
+        .ConfigurePrimaryHttpMessageHandler(() =>
+        {
+            return new SocketsHttpHandler
+            {
+                PooledConnectionLifetime = TimeSpan.FromMinutes(5)
+            };
+        })
+        .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
+    }
+
+    public static void RegisterModelsSettings(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<AppServicesSettings>(builder.Configuration.GetSection(nameof(AppServicesSettings)));
+    }
 }

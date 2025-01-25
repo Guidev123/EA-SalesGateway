@@ -15,6 +15,13 @@ public static class DependencyInjection
     {
         builder.AddHttpClientServices();
         builder.RegisterModelsSettings();
+        builder.AddServices();
+    }
+
+    public static void AddServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<IUserService, UserService>();
     }
 
     public static void AddHttpClientServices(this WebApplicationBuilder builder)
@@ -34,11 +41,14 @@ public static class DependencyInjection
         builder.Services.AddHttpClient<TInterface, TImplementation>((serviceProvider, httpClient) =>
         {
             var appServices = serviceProvider.GetRequiredService<IOptions<AppServicesSettings>>().Value;
-            var token = serviceProvider.GetRequiredService<IUserService>();
+
+            using var scope = serviceProvider.CreateScope();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+            var token = userService.GetToken();
 
             var serviceUrl = getServiceUrl(appServices);
 
-            httpClient.DefaultRequestHeaders.Add("Authorization", token.GetToken());
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
             httpClient.BaseAddress = new Uri(serviceUrl);
         })
         .ConfigurePrimaryHttpMessageHandler(() =>

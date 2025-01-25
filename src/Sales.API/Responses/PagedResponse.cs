@@ -12,7 +12,7 @@ public class PagedResponse<TData> : Response<TData>
         TData? data = default,
         int currentPage = ApiConfiguration.DEFAULT_PAGE,
         int pageSize = ApiConfiguration.DEFAULT_PAGE_SIZE,
-        int code = 200,
+        int code = DEFAULT_STATUS_CODE,
         string? message = null,
         string[]? errors = null)
         : base(data, code, message, errors)
@@ -25,7 +25,7 @@ public class PagedResponse<TData> : Response<TData>
 
     public PagedResponse(
         TData? data,
-        int code = 200,
+        int code = DEFAULT_STATUS_CODE,
         string? message = null,
         string[]? errors = null)
         : base(data, code, message, errors)

@@ -14,4 +14,13 @@ public abstract class MainController : ControllerBase
         204 => TypedResults.NoContent(),
         _ => TypedResults.NotFound()
     };
+
+    public IResult CustomResponse(Response response) => response.statusCode switch
+    {
+        200 => TypedResults.Ok(response),
+        400 => TypedResults.BadRequest(response),
+        201 => TypedResults.Created(string.Empty, response),
+        204 => TypedResults.NoContent(),
+        _ => TypedResults.NotFound()
+    };
 }

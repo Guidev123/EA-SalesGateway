@@ -19,4 +19,8 @@
     <ProjectReference Include="..\..\..\SharedLib\src\SharedLib.Tokens\SharedLib.Tokens.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Cart\AddItem\" />
+  </ItemGroup>
+
 </Project>

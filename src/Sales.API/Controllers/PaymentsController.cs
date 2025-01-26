@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 namespace Sales.API.Controllers;
 
 [Authorize]
-[Route("api/v1/payment")]
+[Route("api/v1/sales/payment")]
 public class PaymentsController : MainController
 {
 

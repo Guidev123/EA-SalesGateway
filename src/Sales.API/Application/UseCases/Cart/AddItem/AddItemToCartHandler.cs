@@ -1,29 +1,29 @@
 ﻿using MediatR;
+using Sales.API.Application.DTOs;
 using Sales.API.Application.Responses;
-using Sales.API.DTOs;
 using Sales.API.Services.Cart;
 using Sales.API.Services.Catalog;
 
 namespace Sales.API.Application.UseCases.Cart.AddItem;
 
 public sealed class AddItemToCartHandler(ICartRestService cartService, ICatalogRestService catalogService)
-                  : IRequestHandler<AddItemToCartRequest, Response<AddItemToCartResponse>>
+                  : IRequestHandler<AddItemToCartCommand, Response<AddItemToCartResponse>>
 {
     private readonly ICartRestService _cartService = cartService;
     private readonly ICatalogRestService _catalogService = catalogService;
-    public async Task<Response<AddItemToCartResponse>> Handle(AddItemToCartRequest request, CancellationToken cancellationToken)
+    public async Task<Response<AddItemToCartResponse>> Handle(AddItemToCartCommand command, CancellationToken cancellationToken)
     {
-        var product = await _catalogService.GetProductByIdAsync(request.ProductId);
+        var product = await _catalogService.GetProductByIdAsync(command.ProductId);
         if (!product.IsSuccess || product.Data is null)
             return new(null, 404, "Product not found");
 
         var cart = await _cartService.GetByCustomerIdAsync();
-        var cartValidation = ValidateItemCart(cart.Data, product.Data, request.ProductId, request.Quantity);
+        var cartValidation = ValidateItemCart(cart.Data, product.Data, command.ProductId, command.Quantity);
 
         if (!cartValidation.IsSuccess)
             return new(null, 400, cartValidation.Message);
 
-        var result = await _cartService.AddItemToCartAsync(request);
+        var result = await _cartService.AddItemToCartAsync(command);
         return result is null ? new(null, 400) : result;
     }
 

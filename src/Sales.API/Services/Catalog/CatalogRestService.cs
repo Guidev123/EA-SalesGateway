@@ -1,5 +1,5 @@
-﻿using Sales.API.Application.Responses;
-using Sales.API.DTOs;
+﻿using Sales.API.Application.DTOs;
+using Sales.API.Application.Responses;
 
 namespace Sales.API.Services.Catalog;
 

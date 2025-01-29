@@ -4,15 +4,13 @@ namespace Sales.API.Configurations;
 
 public static class SwaggerConfiguration
 {
-    public static void AddDocumentationConfig(this WebApplicationBuilder builder)
+    public static void AddSwaggerConfig(this IServiceCollection services)
     {
-        builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddSwaggerGen(c =>
+        services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo()
             {
-                Title = "Ecommerce APP Enterprise API",
+                Title = "API Sales",
                 Contact = new OpenApiContact() { Name = "Guilherme Nascimento", Email = "guirafaelrn@gmail.com" },
                 License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/license/MIT") }
             });
@@ -26,20 +24,27 @@ public static class SwaggerConfiguration
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey
             });
+
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
         });
+    }
+
+    public static void UseSwaggerConfig(this IApplicationBuilder app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
     }
 }

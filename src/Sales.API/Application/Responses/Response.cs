@@ -9,13 +9,13 @@ public class Response<TData>(
     string[]? errors = null)
 {
     [JsonIgnore]
-    public readonly int statusCode = code ?? DEFAULT_STATUS_CODE;
+    public readonly int StatusCode = code ?? DEFAULT_STATUS_CODE;
     public const int DEFAULT_STATUS_CODE = 200;
     public TData? Data { get; set; } = data;
     public string? Message { get; } = message;
     public string[]? Errors { get; } = errors;
     public bool IsSuccess =>
-        statusCode is >= DEFAULT_STATUS_CODE and <= 299;
+        StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
 }
 
 public class Response(
@@ -24,10 +24,10 @@ public class Response(
     string[]? errors = null)
 {
     [JsonIgnore]
-    public readonly int statusCode = code ?? DEFAULT_STATUS_CODE;
+    public readonly int StatusCode = code ?? DEFAULT_STATUS_CODE;
     public const int DEFAULT_STATUS_CODE = 200;
     public string? Message { get; } = message;
     public string[]? Errors { get; } = errors;
     public bool IsSuccess =>
-        statusCode is >= DEFAULT_STATUS_CODE and <= 299;
+        StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
 }

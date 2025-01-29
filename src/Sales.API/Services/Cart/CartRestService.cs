@@ -1,6 +1,6 @@
-﻿using Sales.API.Application.Responses;
+﻿using Sales.API.Application.DTOs;
+using Sales.API.Application.Responses;
 using Sales.API.Application.UseCases.Cart.AddItem;
-using Sales.API.DTOs;
 
 namespace Sales.API.Services.Cart;
 
@@ -9,7 +9,7 @@ public sealed class CartRestService(HttpClient client)
 {
     private readonly HttpClient _client = client;
 
-    public async Task<Response<AddItemToCartResponse>> AddItemToCartAsync(AddItemToCartRequest cartItens)
+    public async Task<Response<AddItemToCartResponse>> AddItemToCartAsync(AddItemToCartCommand cartItens)
     {
         var response = await _client.PostAsync(string.Empty, GetContent(cartItens)).ConfigureAwait(false);
 

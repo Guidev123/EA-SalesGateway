@@ -6,6 +6,7 @@ using Sales.API.Services.Catalog;
 using Sales.API.Services.Order;
 using Sales.API.Services.Payment;
 using Sales.API.Services.User;
+using System.Reflection;
 
 namespace Sales.API.Configurations;
 
@@ -16,6 +17,7 @@ public static class DependencyInjection
         builder.AddHttpClientServices();
         builder.RegisterModelsSettings();
         builder.AddServices();
+        builder.AddHandlers();
     }
 
     public static void AddServices(this WebApplicationBuilder builder)
@@ -23,6 +25,9 @@ public static class DependencyInjection
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IUserService, UserService>();
     }
+
+    public static void AddHandlers(this WebApplicationBuilder builder) =>
+        builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
     public static void AddHttpClientServices(this WebApplicationBuilder builder)
     {

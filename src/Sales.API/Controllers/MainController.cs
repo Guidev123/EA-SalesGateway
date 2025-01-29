@@ -6,7 +6,8 @@ namespace Sales.API.Controllers;
 [ApiController]
 public abstract class MainController : ControllerBase
 {
-    public IResult CustomResponse<T>(Response<T> response) => response.statusCode switch
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public IResult CustomResponse<T>(Response<T> response) => response.StatusCode switch
     {
         200 => TypedResults.Ok(response),
         400 => TypedResults.BadRequest(response),
@@ -15,7 +16,8 @@ public abstract class MainController : ControllerBase
         _ => TypedResults.NotFound()
     };
 
-    public IResult CustomResponse(Response response) => response.statusCode switch
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public IResult CustomResponse(Response response) => response.StatusCode switch
     {
         200 => TypedResults.Ok(response),
         400 => TypedResults.BadRequest(response),

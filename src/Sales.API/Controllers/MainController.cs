@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sales.API.Responses;
+using Sales.API.Application.Responses;
 
 namespace Sales.API.Controllers;
 

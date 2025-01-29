@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Sales.API.Responses;
+namespace Sales.API.Application.Responses;
 
 public class Response<TData>(
     TData? data,

@@ -1,22 +1,31 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sales.API.DTOs;
+using Sales.API.Application.UseCases.Cart.AddItem;
 using Sales.API.Services.Cart;
 
 namespace Sales.API.Controllers;
 
 [Authorize]
 [Route("api/v1/sales/cart")]
-public class CartController(ICartRestService cartRest) : MainController
+public class CartController(IMediator mediator) : MainController
 {
-    private readonly ICartRestService _cartRest = cartRest;
+    private readonly IMediator _mediator = mediator;
 
     [HttpPost]
-    public async Task<IResult> AddItemToCartAsync(CartItensDTO item) =>
-        CustomResponse(await _cartRest.AddItemToCartAsync(item));
+    public async Task<IResult> AddItemToCartAsync(AddItemToCartRequest command) =>
+        CustomResponse(await _mediator.Send(command));
+
+    [HttpPost("/apply-voucher/{code}")]
+    public async Task<IResult> ApplyVoucherToCartAsync(string code) =>
+        CustomResponse(await _cartRest.ApplyVoucherToCartAsync(code));
 
     [HttpGet]
     public async Task<IResult> GetByCustomerIdAsync() =>
+        CustomResponse(await _cartRest.GetByCustomerIdAsync());
+
+    [HttpGet("/quantity")]
+    public async Task<IResult> GetCartQuantityItems() =>
         CustomResponse(await _cartRest.GetByCustomerIdAsync());
 
     [HttpPut("/{productId:guid}/{quantity:int}")]

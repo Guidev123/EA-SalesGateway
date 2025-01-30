@@ -17,7 +17,7 @@ public sealed class ApplyVoucherHandler(IOrderRestService orderService,
         if (voucher.IsSuccess || voucher.Data is null)
             return new(404, voucher.Message);
 
-        var result = await _cartService.ApplyVoucherToCartAsync(command.Code);
+        var result = await _cartService.ApplyVoucherToCartAsync(voucher.Data.Code);
 
         return result.IsSuccess
             ? new(204)

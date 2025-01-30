@@ -8,10 +8,7 @@ public class Response<TData>
     public readonly int StatusCode;
     public const int DEFAULT_STATUS_CODE = 200;
 
-    public Response()
-    {
-        
-    }
+    public Response() { }
 
     public Response(
         TData? data,

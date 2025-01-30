@@ -1,3 +1,11 @@
 ﻿namespace Sales.API.Application.DTOs;
 
-public record ProductDTO(string Name, string Description, string ImageUrl, decimal Price, int QuantityInStock);
+using System.Text.Json.Serialization;
+
+public record ProductDTO(
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("description")] string Description,
+    [property: JsonPropertyName("imageUrl")] string ImageUrl,
+    [property: JsonPropertyName("price")] decimal Price,
+    [property: JsonPropertyName("quantityInStock")] int QuantityInStock
+);

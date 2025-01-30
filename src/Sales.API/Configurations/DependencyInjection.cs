@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Sales.API.Extensions;
+using Sales.API.Middlewares;
 using Sales.API.Services;
 using Sales.API.Services.Cart;
 using Sales.API.Services.Catalog;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         builder.AddHttpClientServices();
         builder.RegisterModelsSettings();
         builder.AddServices();
+        builder.AddCustomMiddlewares();
         builder.AddHandlers();
     }
 
@@ -69,5 +71,10 @@ public static class DependencyInjection
     public static void RegisterModelsSettings(this WebApplicationBuilder builder)
     {
         builder.Services.Configure<AppServicesSettings>(builder.Configuration.GetSection(nameof(AppServicesSettings)));
+    }
+
+    public static void AddCustomMiddlewares(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<GlobalExceptionMiddleware>();
     }
 }

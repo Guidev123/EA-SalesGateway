@@ -7,55 +7,44 @@ using Sales.API.Services.Catalog;
 namespace Sales.API.Application.UseCases.Cart.AddItem;
 
 public sealed class AddItemToCartHandler(ICartRestService cartService, ICatalogRestService catalogService)
-                  : IRequestHandler<AddItemToCartCommand, Response<AddItemToCartResponse>>
+    : IRequestHandler<AddItemToCartCommand, Response<AddItemToCartResponse>>
 {
     private readonly ICartRestService _cartService = cartService;
     private readonly ICatalogRestService _catalogService = catalogService;
+
     public async Task<Response<AddItemToCartResponse>> Handle(AddItemToCartCommand command, CancellationToken cancellationToken)
     {
         var product = await _catalogService.GetProductByIdAsync(command.ProductId);
         if (!product.IsSuccess || product.Data is null)
-            return new(null, 404, "Product not found");
+            return new(default, 404, "Product not found");
 
         var cart = await _cartService.GetByCustomerIdAsync();
-        var cartValidation = ValidateItemCart(cart.Data, product.Data, command.ProductId, command.Quantity);
+        var validationResult = cart.IsSuccess && cart.Data is not null
+            ? ValidateCartItem(cart.Data, product.Data, command.ProductId, command.Quantity)
+            : ValidateNewCartItem(product.Data, command.Quantity);
 
-        if (!cartValidation.IsSuccess)
-            return new(null, 400, cartValidation.Message);
+        if (!validationResult.IsSuccess)
+            return new(default, 400, validationResult.Message);
 
         var result = await _cartService.AddItemToCartAsync(command);
-        return result is null ? new(null, 400) : result;
+        return result ?? new(default, 400);
     }
 
-    private static Response<ProductDTO> ValidateItemCart(CartDTO? cart, ProductDTO product, Guid productId, int quantity) 
-        => cart is null
-            ? HandleNewCartItem(product, quantity)
-            : HandleCartItem(cart, product, productId, quantity);
-
-    private static Response<ProductDTO> HandleCartItem(CartDTO cart, ProductDTO productDTO, Guid productId, int quantity)
+    private static Response<ProductDTO> ValidateCartItem(CartDTO cart, ProductDTO productDTO, Guid productId, int quantity)
     {
-        if (productDTO is null || cart is null) return new(null, 400, "Product is null");
-        if (quantity < 1) return new(null, 400, $"The quantity of {productDTO.Name} should be greater than 0");
+        if (cart is null) return new(default, 400, "Cart is null");
 
-        var itemCart = cart.Items.FirstOrDefault(p => p.ProductId == productId);
-
-        if (itemCart is not null && itemCart.Quantity + quantity > productDTO.QuantityInStock)
-            return new(null, 400, $"The product {productDTO.Name} has {productDTO.QuantityInStock} unities in stock, you picked up {quantity}");
-
-        if (quantity > productDTO.QuantityInStock)
-            return new(null, 400, $"The product {productDTO.Name} has {productDTO.QuantityInStock} unities in stock, you picked up {quantity}");
-
-        return new(null, 200);
+        var existingItem = cart.Items.FirstOrDefault(p => p.ProductId == productId);
+        return ValidateNewCartItem(productDTO, existingItem?.Quantity + quantity ?? quantity);
     }
 
-    private static Response<ProductDTO> HandleNewCartItem(ProductDTO productDTO, int quantity)
+    private static Response<ProductDTO> ValidateNewCartItem(ProductDTO productDTO, int quantity)
     {
-        if (productDTO is null) return new(null, 400, "Product is null");
-        if (quantity < 1) return new(null, 400, $"The quantity of {productDTO.Name} should be greater than 0");
-
+        if (productDTO is null) return new(default, 400, "Product is null");
+        if (quantity < 1) return new(default, 400, $"The quantity of {productDTO.Name} should be greater than 0");
         if (quantity > productDTO.QuantityInStock)
-            return new(null, 400, $"The product {productDTO.Name} has {productDTO.QuantityInStock} unities in stock, you picked up {quantity}");
+            return new(default, 400, $"The product {productDTO.Name} has {productDTO.QuantityInStock} units in stock, you picked {quantity}");
 
-        return new(null, 200);
+        return new(default, 200);
     }
 }

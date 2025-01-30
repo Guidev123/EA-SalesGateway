@@ -11,7 +11,7 @@ public sealed class CartRestService(HttpClient client)
 
     public async Task<Response<AddItemToCartResponse>> AddItemToCartAsync(AddItemToCartCommand cartItens)
     {
-        var response = await _client.PostAsync(string.Empty, GetContent(cartItens)).ConfigureAwait(false);
+        var response = await _client.PostAsync("/api/v1/carts", GetContent(cartItens)).ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<Response<AddItemToCartResponse>>(response);
 
@@ -22,7 +22,7 @@ public sealed class CartRestService(HttpClient client)
 
     public async Task<Response<CartDTO>> GetByCustomerIdAsync()
     {
-        var response = await _client.GetAsync(string.Empty).ConfigureAwait(false);
+        var response = await _client.GetAsync("/api/v1/carts").ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<Response<CartDTO>>(response);
 
@@ -33,7 +33,7 @@ public sealed class CartRestService(HttpClient client)
 
     public async Task<Response> ApplyVoucherToCartAsync(string voucherCode)
     {
-        var response = await _client.PostAsync($"apply-voucher/{voucherCode}", null).ConfigureAwait(false);
+        var response = await _client.PostAsync($"/api/v1/carts/apply-voucher/{voucherCode}", null).ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<Response>(response);
 
@@ -44,7 +44,7 @@ public sealed class CartRestService(HttpClient client)
 
     public async Task<Response> RemoveItemFromCartAsync(Guid productId)
     {
-        var response = await _client.DeleteAsync($"/{productId}").ConfigureAwait(false);
+        var response = await _client.DeleteAsync($"/api/v1/carts/{productId}").ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<Response>(response);
 
@@ -55,7 +55,7 @@ public sealed class CartRestService(HttpClient client)
 
     public async Task<Response> UpdateCartItemAsync(Guid productId, int quantity)
     {
-        var response = await _client.PutAsync($"/{productId}/{quantity}", null).ConfigureAwait(false);
+        var response = await _client.PutAsync($"/api/v1/carts/{productId}/{quantity}", null).ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<Response>(response);
 

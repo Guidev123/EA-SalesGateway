@@ -10,7 +10,7 @@ public sealed class CatalogRestService(HttpClient client)
 
     public async Task<Response<ProductDTO>> GetProductByIdAsync(Guid id)
     {
-        var response = await _client.GetAsync($"/{id}").ConfigureAwait(false);
+        var response = await _client.GetAsync($"/api/v1/catalog/{id}").ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<Response<ProductDTO>>(response);
 

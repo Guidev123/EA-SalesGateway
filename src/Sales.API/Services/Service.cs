@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace Sales.API.Services;
 
@@ -13,7 +13,8 @@ public abstract class Service
     {
         var options = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            IncludeFields = true
         };
 
         return JsonSerializer.Deserialize<T>(await response.Content.ReadAsStringAsync(), options);

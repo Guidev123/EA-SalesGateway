@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Sales.API.Configurations;
-using System.Text.Json.Serialization;
+﻿using Sales.API.Configurations;
 
 namespace Sales.API.Application.Responses;
 
 public class PagedResponse<TData> : Response<TData>
 {
-    [JsonConstructor]
+    public PagedResponse() { }
     public PagedResponse(
-    int totalCount,
+        int totalCount,
         TData? data = default,
         int currentPage = ApiConfiguration.DEFAULT_PAGE,
         int pageSize = ApiConfiguration.DEFAULT_PAGE_SIZE,
@@ -30,6 +28,7 @@ public class PagedResponse<TData> : Response<TData>
         string[]? errors = null)
         : base(data, code, message, errors)
     {
+
     }
 
     public int CurrentPage { get; set; }

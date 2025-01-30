@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sales.API.Application.Responses;
 using Sales.API.Application.UseCases.Cart.AddItem;
@@ -9,6 +10,7 @@ using Sales.API.Services.Cart;
 
 namespace Sales.API.Controllers;
 
+[Authorize]
 [Route("api/v1/sales/cart")]
 public class CartController(IMediator mediator, ICartRestService cartService) : MainController
 {
@@ -42,10 +44,16 @@ public class CartController(IMediator mediator, ICartRestService cartService) : 
         var cart = await _cartService.GetByCustomerIdAsync();
         if (!cart.IsSuccess
             || cart.Data is null
-            || cart.Data.Items is null)
+            || cart.Data.CartItems is null)
             return CustomResponse(new Response(404, "Cart not found"));
 
-        var result = new Response<int>(cart.Data.Items.Count, 200);
+        int quantity = 0;
+        cart.Data.CartItems.ForEach(x =>
+        {
+            quantity += x.Quantity;
+        });
+
+        var result = new Response<int>(quantity, 200, "Success!");
         return CustomResponse(result);
     }
 }

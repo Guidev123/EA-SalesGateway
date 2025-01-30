@@ -6,9 +6,9 @@ namespace Sales.API.Services.Cart;
 
 public interface ICartRestService
 {
-    Task<Response<AddItemToCartResponse>> AddItemToCartAsync(AddItemToCartCommand cartItens);
+    Task<Response<AddItemToCartResponse>> AddItemAsync(AddItemToCartCommand cartItens);
     Task<Response<CartDTO>> GetByCustomerIdAsync();
-    Task<Response> ApplyVoucherToCartAsync(string voucherCode);
-    Task<Response> RemoveItemFromCartAsync(Guid productId);
-    Task<Response> UpdateCartItemAsync(Guid productId, int quantity);
+    Task<Response> ApplyVoucherAsync(string voucherCode);
+    Task<Response> RemoveItemAsync(Guid productId);
+    Task<Response> UpdateItemAsync(Guid productId, int quantity);
 }

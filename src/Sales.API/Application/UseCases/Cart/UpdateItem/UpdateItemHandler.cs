@@ -19,12 +19,12 @@ public sealed class UpdateItemHandler(ICartRestService cartService,
         if(!validate.IsSuccess)
             return new(validate.StatusCode, validate.Message);
 
-        return await _cartService.UpdateCartItemAsync(command.ProductId, command.Quantity);
+        return await _cartService.UpdateItemAsync(command.ProductId, command.Quantity);
     }
 
     private async Task<Response<ProductDTO>> ValidateItemQuantity(Guid productId, int quantity)
     {
-        var product = await _catalogService.GetProductByIdAsync(productId);
+        var product = await _catalogService.GetByIdAsync(productId);
         if(product.Data is null || !product.IsSuccess)
             return new(null, 404, "Product not found");
 
@@ -32,7 +32,7 @@ public sealed class UpdateItemHandler(ICartRestService cartService,
         if (cart.Data is null || !cart.IsSuccess)
             return new(null, 404, "Cart not found");
 
-        var itemCart = cart.Data.Items.FirstOrDefault(p => p.ProductId == productId);
+        var itemCart = cart.Data.CartItems.FirstOrDefault(p => p.ProductId == productId);
 
         if(itemCart is not null && itemCart.Quantity + quantity > product.Data.QuantityInStock)
             return new(null, 400, $"The product {product.Data.Name} has {product.Data.QuantityInStock} unities in stock, you picked up {quantity}");
@@ -40,6 +40,6 @@ public sealed class UpdateItemHandler(ICartRestService cartService,
         if(quantity > product.Data.QuantityInStock)
             return new(null, 400, $"The product {product.Data.Name} has {product.Data.QuantityInStock} unities in stock, you picked up {quantity}");
 
-        return new(null, 204);
+        return new(null, 204, "Success!");
     }
 }

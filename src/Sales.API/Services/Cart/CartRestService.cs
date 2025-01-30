@@ -9,7 +9,7 @@ public sealed class CartRestService(HttpClient client)
 {
     private readonly HttpClient _client = client;
 
-    public async Task<Response<AddItemToCartResponse>> AddItemToCartAsync(AddItemToCartCommand cartItens)
+    public async Task<Response<AddItemToCartResponse>> AddItemAsync(AddItemToCartCommand cartItens)
     {
         var response = await _client.PostAsync("/api/v1/carts", GetContent(cartItens)).ConfigureAwait(false);
 
@@ -31,10 +31,13 @@ public sealed class CartRestService(HttpClient client)
             : new(null, 400, "Something failed during the request.");
     }
 
-    public async Task<Response> ApplyVoucherToCartAsync(string voucherCode)
+    public async Task<Response> ApplyVoucherAsync(string voucherCode)
     {
         var response = await _client.PostAsync($"/api/v1/carts/apply-voucher/{voucherCode}", null).ConfigureAwait(false);
 
+        if ((int)response.StatusCode == 204)
+            return new(204, "Operation is valid");
+
         var result = await DeserializeObjectResponse<Response>(response);
 
         return result is not null
@@ -42,10 +45,13 @@ public sealed class CartRestService(HttpClient client)
             : new(400, "Something failed during the request.");
     }
 
-    public async Task<Response> RemoveItemFromCartAsync(Guid productId)
+    public async Task<Response> RemoveItemAsync(Guid productId)
     {
         var response = await _client.DeleteAsync($"/api/v1/carts/{productId}").ConfigureAwait(false);
 
+        if ((int)response.StatusCode == 204)
+            return new(204, "Operation is valid");
+
         var result = await DeserializeObjectResponse<Response>(response);
 
         return result is not null
@@ -53,9 +59,12 @@ public sealed class CartRestService(HttpClient client)
             : new(400, "Something failed during the request.");
     }
 
-    public async Task<Response> UpdateCartItemAsync(Guid productId, int quantity)
+    public async Task<Response> UpdateItemAsync(Guid productId, int quantity)
     {
         var response = await _client.PutAsync($"/api/v1/carts/{productId}/{quantity}", null).ConfigureAwait(false);
+
+        if((int)response.StatusCode == 204)
+            return new(204, "Operation is valid");
 
         var result = await DeserializeObjectResponse<Response>(response);
 

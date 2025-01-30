@@ -17,10 +17,10 @@ public sealed class ApplyVoucherHandler(IOrderRestService orderService,
         if (voucher.IsSuccess || voucher.Data is null)
             return new(404, voucher.Message);
 
-        var result = await _cartService.ApplyVoucherToCartAsync(voucher.Data.Code);
+        var result = await _cartService.ApplyVoucherAsync(voucher.Data.Code);
 
         return result.IsSuccess
-            ? new(204)
+            ? new(204, "Success!")
             : new(400, result.Message);
     }
 }

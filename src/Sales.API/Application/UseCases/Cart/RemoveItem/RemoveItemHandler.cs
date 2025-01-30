@@ -10,5 +10,5 @@ public sealed class RemoveItemHandler(ICartRestService cartService)
     private readonly ICartRestService _cartService = cartService;
 
     public async Task<Response> Handle(RemoveItemCommand command, CancellationToken cancellationToken)
-        => await _cartService.RemoveItemFromCartAsync(command.ProductId);
+        => await _cartService.RemoveItemAsync(command.ProductId);
 }

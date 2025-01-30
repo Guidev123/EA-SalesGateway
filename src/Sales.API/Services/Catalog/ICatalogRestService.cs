@@ -5,5 +5,6 @@ namespace Sales.API.Services.Catalog;
 
 public interface ICatalogRestService
 {
-    Task<Response<ProductDTO>> GetProductByIdAsync(Guid id);
+    Task<Response<ProductDTO>> GetByIdAsync(Guid id);
+    Task<PagedResponse<IEnumerable<ProductDTO>>> GetAllAsync();
 }

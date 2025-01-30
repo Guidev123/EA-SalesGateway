@@ -17,7 +17,9 @@ public abstract class Service
             IncludeFields = true
         };
 
-        return JsonSerializer.Deserialize<T>(await response.Content.ReadAsStringAsync(), options);
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<T>(json, options);
     }
 
     protected bool OpertationIsValid(HttpResponseMessage response)

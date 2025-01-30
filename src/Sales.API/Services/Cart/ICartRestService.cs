@@ -1,6 +1,6 @@
 ﻿using Sales.API.Application.DTOs;
 using Sales.API.Application.Responses;
-using Sales.API.Application.UseCases.Cart.AddItem;
+using Sales.API.Application.UseCases.Carts.AddItem;
 
 namespace Sales.API.Services.Cart;
 

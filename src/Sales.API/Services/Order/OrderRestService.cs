@@ -7,7 +7,7 @@ public sealed class OrderRestService(HttpClient client)
                   : Service, IOrderRestService
 {
     private readonly HttpClient _client = client;
-    public async Task<Response<VoucherDTO>> GetVoucherByCode(string code)
+    public async Task<Response<VoucherDTO>> GetVoucherByCodeAsync(string code)
     {
         var response = await _client.GetAsync($"/{code}").ConfigureAwait(false);
         var result = await DeserializeObjectResponse<Response<VoucherDTO>>(response);

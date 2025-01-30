@@ -3,7 +3,7 @@ using Sales.API.Application.Responses;
 using Sales.API.Services.Cart;
 using Sales.API.Services.Order;
 
-namespace Sales.API.Application.UseCases.Cart.ApplyVoucher;
+namespace Sales.API.Application.UseCases.Carts.ApplyVoucher;
 
 public sealed class ApplyVoucherHandler(IOrderRestService orderService,
                                         ICartRestService cartService)
@@ -13,7 +13,7 @@ public sealed class ApplyVoucherHandler(IOrderRestService orderService,
     private readonly ICartRestService _cartService = cartService;
     public async Task<Response> Handle(ApplyVoucherCommand command, CancellationToken cancellationToken)
     {
-        var voucher = await _orderService.GetVoucherByCode(command.Code);
+        var voucher = await _orderService.GetVoucherByCodeAsync(command.Code);
         if (voucher.IsSuccess || voucher.Data is null)
             return new(404, voucher.Message);
 

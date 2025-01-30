@@ -4,7 +4,7 @@ using Sales.API.Application.Responses;
 using Sales.API.Services.Cart;
 using Sales.API.Services.Catalog;
 
-namespace Sales.API.Application.UseCases.Cart.AddItem;
+namespace Sales.API.Application.UseCases.Carts.AddItem;
 
 public sealed class AddItemToCartHandler(ICartRestService cartService, ICatalogRestService catalogService)
     : IRequestHandler<AddItemToCartCommand, Response<AddItemToCartResponse>>

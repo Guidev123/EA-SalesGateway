@@ -2,7 +2,7 @@
 using Sales.API.Application.Responses;
 using Sales.API.Services.Cart;
 
-namespace Sales.API.Application.UseCases.Cart.RemoveItem;
+namespace Sales.API.Application.UseCases.Carts.RemoveItem;
 
 public sealed class RemoveItemHandler(ICartRestService cartService)
                   : IRequestHandler<RemoveItemCommand, Response>

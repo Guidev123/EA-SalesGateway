@@ -5,10 +5,10 @@ using Sales.API.Services.Order;
 namespace Sales.API.Application.UseCases.Orders.Create;
 
 public sealed class CreateOrderHandler(IOrderRestService orderService)
-                  : IRequestHandler<CreateOrderRequest, Response<CreateOrderResponse>>
+                  : IRequestHandler<CreateOrderCommand, Response<CreateOrderResponse>>
 {
     private readonly IOrderRestService _orderService = orderService;
-    public async Task<Response<CreateOrderResponse>> Handle(CreateOrderRequest request, CancellationToken cancellationToken)
+    public async Task<Response<CreateOrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

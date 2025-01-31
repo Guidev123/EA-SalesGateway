@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sales.API.Application.Responses;
-using Sales.API.Application.UseCases.Cart.ApplyVoucher;
-using Sales.API.Application.UseCases.Cart.RemoveItem;
-using Sales.API.Application.UseCases.Cart.UpdateItem;
 using Sales.API.Application.UseCases.Carts.AddItem;
+using Sales.API.Application.UseCases.Carts.ApplyVoucher;
+using Sales.API.Application.UseCases.Carts.RemoveItem;
+using Sales.API.Application.UseCases.Carts.UpdateItem;
 using Sales.API.Services.Cart;
 
 namespace Sales.API.Controllers;

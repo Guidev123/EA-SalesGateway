@@ -9,6 +9,11 @@ public sealed class CustomerRestService(HttpClient client) : Service, ICustomerR
 
     public async Task<Response<AddressDTO>> GetAddressAsync()
     {
-        throw new NotImplementedException();
+        var response = await _client.GetAsync("/api/v1/customers/address");
+
+        var result = await DeserializeObjectResponse<Response<AddressDTO>>(response);
+        return result is not null
+            ? new(result.Data, (int)response.StatusCode, result.Message, result.Errors)
+            : new(null, 400, "Something failed during the request.");
     }
 }

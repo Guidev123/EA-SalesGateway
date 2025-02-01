@@ -20,24 +20,34 @@ public sealed class CreateOrderHandler(IOrderRestService orderService,
     private readonly ICustomerRestService _customerService = customerService;
     public async Task<Response<CreateOrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var cart = await ValidateCart();
-        var products = await ValidateProducts(cart.Data!);
         var address = await ValidateAddress();
-        if (!cart.IsSuccess || !products.IsSuccess || !address.IsSuccess)
-            return new(null, 400, "Invalid Operation", GetAllErrors(cart, products, address));
+        var orderValidator = await ValidateOrderDetails(request, address);
+        if (!orderValidator.IsSuccess)
+            return new(null, orderValidator.StatusCode, orderValidator.Message, orderValidator.Errors);
 
-        var validateOrder = await ValidateOrder(cart.Data!, products.Data!);
-        if (!validateOrder.IsSuccess)
-            return new(null, 400, validateOrder.Message, validateOrder.Errors);
-
-        if (cart.Data!.TotalPrice != request.TotalPrice)
-            return new(null, 400, "The cart price is different from the order price");
-
-        var result = await _orderService.CreateAsync(request);
+        var result = await _orderService.CreateAsync(new(request.TotalPrice, request.OrderItems, request.VoucherCode,
+                                                     request.VoucherIsUsed, request.Discount, address.Data!));
 
         return result.IsSuccess
             ? result
             : new(null, 400, result.Message, result.Errors);
+    }
+
+    private async Task<Response> ValidateOrderDetails(CreateOrderCommand request, Response<AddressDTO> address)
+    {
+        var cart = await ValidateCart();
+        var products = await ValidateProducts(cart.Data!);
+        if (!cart.IsSuccess || !products.IsSuccess || !address.IsSuccess)
+            return new(400, "Invalid Operation", GetAllErrors(cart, products, address));
+
+        var validateOrder = await ValidateOrder(cart.Data!, products.Data!);
+        if (!validateOrder.IsSuccess)
+            return new(400, validateOrder.Message, validateOrder.Errors);
+
+        if (cart.Data!.TotalPrice != request.TotalPrice)
+            return new(400, "The cart price is different from the order price");
+
+        return new(200);
     }
 
     private async Task<Response> ValidateOrder(CartDTO cart, IEnumerable<OrderItemDTO> products)

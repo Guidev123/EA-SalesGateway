@@ -8,9 +8,9 @@ public sealed class CatalogRestService(HttpClient client)
 {
     private readonly HttpClient _client = client;
 
-    public async Task<PagedResponse<IEnumerable<ProductDTO>>> GetAllAsync()
+    public async Task<PagedResponse<IEnumerable<ProductDTO>>> GetAllAsync(int pageNumber, int pageSize)
     {
-        var response = await _client.GetAsync("/api/v1/catalog").ConfigureAwait(false);
+        var response = await _client.GetAsync($"/api/v1/catalog?pageNumber={pageNumber}&pageSize={pageSize}").ConfigureAwait(false);
 
         var result = await DeserializeObjectResponse<PagedResponse<IEnumerable<ProductDTO>>>(response);
 

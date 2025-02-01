@@ -7,7 +7,7 @@ namespace Sales.API.Services.Orders;
 public interface IOrderRestService
 {
     Task<Response<VoucherDTO>> GetVoucherByCodeAsync(string code);
-    Task<Response<CreateOrderResponse>> CreateAsync(CreateOrderCommand order);
-    Task<PagedResponse<OrderDTO>> GetAllAsync();
-    Task<Response<OrderDTO>> GetByCodeAsync();
+    Task<Response<CreateOrderResponse>> CreateAsync(CreateOrderDTO order);
+    Task<PagedResponse<IEnumerable<OrderDTO>>> GetAllAsync(int pageNumber, int pageSize);
+    Task<Response<OrderDTO>> GetByCodeAsync(string code);
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sales.API.Configurations;
 using Sales.API.Services.Catalogs;
 
 namespace Sales.API.Controllers;
@@ -14,6 +15,7 @@ public class CatalogController(ICatalogRestService catalogService)
         => CustomResponse(await _catalogService.GetByIdAsync(id));
 
     [HttpGet]
-    public async Task<IResult> GetAllAsync()
-        => CustomResponse(await _catalogService.GetAllAsync());
+    public async Task<IResult> GetAllAsync(int pageNumber = ApiConfiguration.DEFAULT_PAGE,
+                                           int pageSize = ApiConfiguration.DEFAULT_PAGE_SIZE)
+        => CustomResponse(await _catalogService.GetAllAsync(pageNumber, pageSize));
 }

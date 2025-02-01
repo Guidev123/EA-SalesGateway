@@ -29,16 +29,23 @@ public class Response<TData>
         StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
 }
 
-public class Response(
-    int? code = null,
-    string? message = null,
-    string[]? errors = null)
+public class Response
 {
     [JsonIgnore]
-    public readonly int StatusCode = code ?? DEFAULT_STATUS_CODE;
+    public readonly int StatusCode;
     public const int DEFAULT_STATUS_CODE = 200;
-    public string? Message { get; } = message;
-    public string[]? Errors { get; } = errors;
+    public Response(int? code = null, string? message = null, string[]? errors = null)
+    {
+        StatusCode = code ?? DEFAULT_STATUS_CODE;
+        Message = message;
+        Errors = errors;
+    }
+
+    public Response() { }
+
+    public string? Message { get; set; }
+    public string[]? Errors { get; set; }
+
     public bool IsSuccess =>
         StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
 }

@@ -2,11 +2,12 @@
 using Sales.API.Extensions;
 using Sales.API.Middlewares;
 using Sales.API.Services;
-using Sales.API.Services.Cart;
-using Sales.API.Services.Catalog;
-using Sales.API.Services.Order;
-using Sales.API.Services.Payment;
-using Sales.API.Services.User;
+using Sales.API.Services.Carts;
+using Sales.API.Services.Catalogs;
+using Sales.API.Services.Customers;
+using Sales.API.Services.Orders;
+using Sales.API.Services.Payments;
+using Sales.API.Services.Users;
 using System.Reflection;
 
 namespace Sales.API.Configurations;
@@ -37,6 +38,7 @@ public static class DependencyInjection
         builder.AddHttpClientService<ICatalogRestService, CatalogRestService>(options => options.CatalogUrl);
         builder.AddHttpClientService<IPaymentRestService, PaymentRestService>(options => options.PaymentUrl);
         builder.AddHttpClientService<IOrderRestService, OrderRestService>(options => options.OrderUrl);
+        builder.AddHttpClientService<ICustomerRestService, CustomerRestService>(options => options.CustomerUrl);
     }
 
     private static void AddHttpClientService<TInterface, TImplementation>(

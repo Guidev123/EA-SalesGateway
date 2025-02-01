@@ -1,4 +1,4 @@
-﻿namespace Sales.API.Services.User;
+﻿namespace Sales.API.Services.Users;
 
 public interface IUserService
 {

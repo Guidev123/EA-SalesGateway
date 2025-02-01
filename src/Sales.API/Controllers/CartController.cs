@@ -6,7 +6,7 @@ using Sales.API.Application.UseCases.Carts.AddItem;
 using Sales.API.Application.UseCases.Carts.ApplyVoucher;
 using Sales.API.Application.UseCases.Carts.RemoveItem;
 using Sales.API.Application.UseCases.Carts.UpdateItem;
-using Sales.API.Services.Cart;
+using Sales.API.Services.Carts;
 
 namespace Sales.API.Controllers;
 

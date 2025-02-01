@@ -1,4 +1,4 @@
-﻿namespace Sales.API.Services.Payment;
+﻿namespace Sales.API.Services.Payments;
 
 public interface IPaymentRestService
 {

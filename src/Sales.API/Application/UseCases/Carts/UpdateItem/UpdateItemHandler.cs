@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Sales.API.Application.DTOs;
 using Sales.API.Application.Responses;
-using Sales.API.Services.Cart;
-using Sales.API.Services.Catalog;
+using Sales.API.Services.Carts;
+using Sales.API.Services.Catalogs;
 
 namespace Sales.API.Application.UseCases.Carts.UpdateItem;
 

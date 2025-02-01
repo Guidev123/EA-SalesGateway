@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Sales.API.Services.User;
+namespace Sales.API.Services.Users;
 
 public sealed class UserService(IHttpContextAccessor httpContextAccessor) : IUserService
 {

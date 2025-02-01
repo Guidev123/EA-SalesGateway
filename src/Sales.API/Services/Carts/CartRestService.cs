@@ -2,7 +2,7 @@
 using Sales.API.Application.Responses;
 using Sales.API.Application.UseCases.Carts.AddItem;
 
-namespace Sales.API.Services.Cart;
+namespace Sales.API.Services.Carts;
 
 public sealed class CartRestService(HttpClient client)
                   : Service, ICartRestService
@@ -63,7 +63,7 @@ public sealed class CartRestService(HttpClient client)
     {
         var response = await _client.PutAsync($"/api/v1/carts/{productId}/{quantity}", null).ConfigureAwait(false);
 
-        if((int)response.StatusCode == 204)
+        if ((int)response.StatusCode == 204)
             return new(204, "Operation is valid");
 
         var result = await DeserializeObjectResponse<Response>(response);

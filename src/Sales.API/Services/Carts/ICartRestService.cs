@@ -2,7 +2,7 @@
 using Sales.API.Application.Responses;
 using Sales.API.Application.UseCases.Carts.AddItem;
 
-namespace Sales.API.Services.Cart;
+namespace Sales.API.Services.Carts;
 
 public interface ICartRestService
 {

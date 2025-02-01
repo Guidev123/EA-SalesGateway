@@ -2,7 +2,7 @@
 using Sales.API.Application.Responses;
 using Sales.API.Application.UseCases.Orders.Create;
 
-namespace Sales.API.Services.Order;
+namespace Sales.API.Services.Orders;
 
 public interface IOrderRestService
 {

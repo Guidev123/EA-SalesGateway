@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Sales.API.Application.Responses;
-using Sales.API.Services.Cart;
+using Sales.API.Services.Carts;
 
 namespace Sales.API.Application.UseCases.Carts.RemoveItem;
 

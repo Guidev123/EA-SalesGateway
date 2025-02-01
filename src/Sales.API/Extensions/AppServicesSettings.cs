@@ -6,4 +6,5 @@ public class AppServicesSettings
     public string CartUrl { get; set; } = string.Empty;
     public string OrderUrl { get; set; } = string.Empty;
     public string PaymentUrl { get; set; } = string.Empty;
+    public string CustomerUrl { get; set; } = string.Empty;
 }

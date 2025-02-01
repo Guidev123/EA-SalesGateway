@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sales.API.Services.Catalog;
+using Sales.API.Services.Catalogs;
 
 namespace Sales.API.Controllers;
 

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Sales.API.Application.Responses;
-using Sales.API.Services.Cart;
-using Sales.API.Services.Order;
+using Sales.API.Services.Carts;
+using Sales.API.Services.Orders;
 
 namespace Sales.API.Application.UseCases.Carts.ApplyVoucher;
 

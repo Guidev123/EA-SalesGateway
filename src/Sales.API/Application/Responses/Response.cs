@@ -24,7 +24,7 @@ public class Response<TData>
 
     public TData? Data { get; set; }
     public string? Message { get; }
-    public string[]? Errors { get; }
+    public string[]? Errors { get; set; }
     public bool IsSuccess =>
         StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
 }
